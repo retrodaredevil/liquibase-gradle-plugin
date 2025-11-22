@@ -1,3 +1,11 @@
+Lavender Publishing Branch
+--------------------------
+
+The branch, https://github.com/retrodaredevil/liquibase-gradle-plugin/tree/lavender/publishing,
+contains a GitHub Action to automatically publish to https://maven.pkg.github.com
+
+All `lavender/*` branches will attempt to publish.
+
 Liquibase Gradle Plugin
 -----------------------
 
