@@ -20,7 +20,6 @@ plugins {
 }
 apply plugin: "com.gradle.plugin-publish"
 apply plugin: "groovy"
-apply plugin: "signing"
 apply plugin: "idea"
 
 sourceCompatibility = 1.8
@@ -75,52 +74,51 @@ gradlePlugin {
     }
 }
 
-// Configure the Vanniktech publishing plugin.
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact sourceJar
-            artifact groovydocJar
-
-            pom {
-                name = "Gradle Liquibase Plugin"
-                description = "A Gradle plugin for running the Liquibase database upgrade tool."
-                url = "https://github.com/liquibase/liquibase-gradle-plugin"
-                licenses {
-                    license {
-                        name = "The Apache License, Version 2.0"
-                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                        distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "stevesaliman"
-                        name = "Steven C. Saliman"
-                        url = "https://github.com/stevesaliman/"
-                    }
-                }
-                scm {
-                    url = "https://github.com/liquibase/liquibase-gradle-plugin"
-                    connection = "scm:https://liquibase@github.com/liquibase/liquibase-gradle-plugin"
-                    developerConnection = "scm:git@github.com:liquibase/liquibase-gradle-plugin.git"
-                }
-            }
-        }
-    }
     repositories {
         maven {
             name = "GitHubPackages"
-            def myUsername = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+            def myUsername = System.getenv("GITHUB_ACTOR")
             url = uri("https://maven.pkg.github.com/$myUsername/liquibase-gradle-plugin")
             credentials {
+                // Use environment variables for security
                 username = myUsername
-                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
 }
+
+// Configure the Vanniktech publishing plugin.
+mavenPublishing {
+    coordinates(group, archivesBaseName, liquibaseGradlePluginVersion)
+
+    pom {
+        name = "Gradle Liquibase Plugin"
+        description = "A Gradle plugin for running the Liquibase database upgrade tool."
+        url = "https://github.com/liquibase/liquibase-gradle-plugin"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = "stevesaliman"
+                name = "Steven C. Saliman"
+                url = "https://github.com/stevesaliman/"
+            }
+        }
+        scm {
+            url = "https://github.com/liquibase/liquibase-gradle-plugin"
+            connection = "scm:https://liquibase@github.com/liquibase/liquibase-gradle-plugin"
+            developerConnection = "scm:git@github.com:liquibase/liquibase-gradle-plugin.git"
+        }
+    }
+}
+
 
 // Use JUnit Platform for tests
 tasks.withType(Test).configureEach { useJUnitPlatform() }
