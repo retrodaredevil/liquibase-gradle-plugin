@@ -6,6 +6,15 @@ contains a GitHub Action to automatically publish to https://maven.pkg.github.co
 
 All `lavender/*` branches will attempt to publish.
 
+```shell
+git switch lavender/publishing
+git remote add zhukau https://github.com/zhukau/liquibase-gradle-plugin.git
+git fetch zhukau
+git switch -c lavender/gradle-9-support
+git merge zhukau/feature/gradle-9-support
+# Now edit version at top of gradle.properties
+```
+
 Liquibase Gradle Plugin
 -----------------------
 
