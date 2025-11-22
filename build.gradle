@@ -105,6 +105,10 @@ publishing {
             }
         }
     }
+    // Add dependencies for the publications to ensure tasks run in the correct order
+    tasks.named("generateMetadataFileForMavenJavaPublication") {
+        dependsOn sourceJar, groovydocJar
+    }
     repositories {
         maven {
             name = "GitHubPackages"
