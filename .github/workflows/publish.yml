@@ -26,7 +26,7 @@ jobs:
           java-version: 21
 
       - name: Build and Publish
-        run: ./gradlew clean build publish
+        run: ./gradlew clean build publishAllPublicationsToGitHubPackagesRepository
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

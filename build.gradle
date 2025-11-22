@@ -71,13 +71,25 @@ gradlePlugin {
     }
 }
 
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            def myUsername = System.getenv("GITHUB_ACTOR")
+            url = uri("https://maven.pkg.github.com/$myUsername/liquibase-gradle-plugin")
+            credentials {
+                // Use environment variables for security
+                username = myUsername
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
 // Configure the Vanniktech publishing plugin.
 mavenPublishing {
     coordinates(group, archivesBaseName, liquibaseGradlePluginVersion)
-    signAllPublications()
-    // The vanniktech plugin is supposed to default to Maven Central, but as of 6/21/25, it still
-    // defaults to the old OSSRH site.
-    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+
     pom {
         name = "Gradle Liquibase Plugin"
         description = "A Gradle plugin for running the Liquibase database upgrade tool."
